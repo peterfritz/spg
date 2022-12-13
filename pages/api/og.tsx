@@ -56,6 +56,9 @@ const handler = async () => {
       </div>
     ),
     {
+      headers: {
+        'cache-control': 'no-cache',
+      },
       width: 1200,
       height: 630,
       fonts: [
