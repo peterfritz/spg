@@ -2,7 +2,7 @@ import Head from 'next/head';
 
 const PWAHead = () => (
   <Head>
-    <meta name="application-name" content="Secure Password Generator" />
+    <meta name="application-name" content="spg" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="spg" />

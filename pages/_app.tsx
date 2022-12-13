@@ -28,7 +28,7 @@ const App = ({ Component, pageProps }: AppProps) => (
       }}
     >
       <DefaultSeo
-        title="spg - Secure Password Generator"
+        title="Secure Password Generator"
         description="A simple and offline-first secure password generator."
         canonical="https://spg.ptr.red/"
         openGraph={{
