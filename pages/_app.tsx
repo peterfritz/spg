@@ -34,7 +34,7 @@ const App = ({ Component, pageProps }: AppProps) => (
         openGraph={{
           images: [
             {
-              url: '/api/og',
+              url: 'https://spg.ptr.red/api/og',
               width: 1200,
               height: 630,
             },
