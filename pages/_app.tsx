@@ -31,6 +31,15 @@ const App = ({ Component, pageProps }: AppProps) => (
         title="spg - Secure Password Generator"
         description="A simple and offline-first secure password generator."
         canonical="https://spg.ptr.red/"
+        openGraph={{
+          images: [
+            {
+              url: '/api/og',
+              width: 1200,
+              height: 630,
+            },
+          ],
+        }}
         additionalLinkTags={[
           {
             rel: 'icon',
