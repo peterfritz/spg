@@ -1,12 +1,22 @@
 import {
   ActionIcon,
   Button,
-  Center, Checkbox, CopyButton, Group, Input, NumberInput, Slider, Space, Stack,
+  Center,
+  Checkbox,
+  CopyButton,
+  Group,
+  Input,
+  NumberInput,
+  Slider,
+  Space,
+  Stack,
   TextInput,
 } from '@mantine/core';
 import { useCounter, useId, useLocalStorage } from '@mantine/hooks';
-import { useEffect, useState } from 'react';
-import { FaCopy, FaRegCopy } from 'react-icons/fa';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  FaCheck, FaCopy, FaLink,
+} from 'react-icons/fa';
 import generatePassword, { characterSets, getCharacterSet } from '../utils/password';
 
 interface Preferences {
@@ -57,6 +67,21 @@ const Home = () => {
     }));
   };
 
+  const apiUrl: string = useMemo(() => {
+    if (typeof window === 'undefined') {
+      return '';
+    }
+
+    const url = new URL(window.location.origin);
+
+    url.pathname = '/api/password';
+
+    url.searchParams.set('length', String(endLength));
+    url.searchParams.set('chars', characters.join(','));
+
+    return url.href;
+  }, [endLength, characters]);
+
   useEffect(() => {
     if (!endLength) {
       return;
@@ -73,6 +98,7 @@ const Home = () => {
         characters,
       }));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savePreferences, endLength, characters, counter]);
 
   return (
@@ -93,7 +119,7 @@ const Home = () => {
                   variant="default"
                   onClick={copy}
                 >
-                  {copied ? <FaCopy /> : <FaRegCopy />}
+                  {copied ? <FaCheck /> : <FaCopy />}
                 </ActionIcon>
               )}
             </CopyButton>
@@ -158,13 +184,22 @@ const Home = () => {
               handleSavePreferencesChange(checked);
             }}
           />
-          <Button
-            onClick={() => {
-              handlers.increment();
-            }}
-          >
-            Generate
-          </Button>
+          <Button.Group>
+            <CopyButton value={apiUrl}>
+              {({ copied, copy }) => (
+                <Button variant="outline" onClick={copy}>
+                  {copied ? <FaCheck /> : <FaLink />}
+                </Button>
+              )}
+            </CopyButton>
+            <Button
+              onClick={() => {
+                handlers.increment();
+              }}
+            >
+              Generate
+            </Button>
+          </Button.Group>
         </Group>
       </Stack>
     </Center>

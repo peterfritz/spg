@@ -22,6 +22,7 @@ const App = ({ Component, pageProps }: AppProps) => (
       theme={{
         fontFamily: jetBrainsMono.style.fontFamily,
         fontFamilyMonospace: jetBrainsMono.style.fontFamily,
+        cursorType: 'pointer',
         colorScheme: 'dark',
         primaryColor: 'teal',
       }}
