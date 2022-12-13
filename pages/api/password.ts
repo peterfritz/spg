@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import cors from '../../lib/cors';
 import generatePassword, { characterSets, getCharacterSet } from '../../utils/password';
 
 const handler = async (req: NextRequest) => {
@@ -22,14 +23,17 @@ const handler = async (req: NextRequest) => {
     getCharacterSet(charSets as (keyof typeof characterSets)[]),
   );
 
-  return new Response(
-    password,
-    {
-      status: 200,
-      headers: {
-        'content-type': 'application/json',
+  return cors(
+    req,
+    new Response(
+      JSON.stringify({ password }),
+      {
+        status: 200,
+        headers: {
+          'content-type': 'application/json',
+        },
       },
-    },
+    ),
   );
 };
 
