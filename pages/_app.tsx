@@ -1,56 +1,65 @@
 import type { AppProps } from 'next/app';
-import '../styles/globals.css';
 
 import { MantineProvider } from '@mantine/core';
+import { useColorScheme } from '@mantine/hooks';
 import { JetBrains_Mono as JetBrainsMono } from '@next/font/google';
 import { DefaultSeo } from 'next-seo';
 import PWAHead from '../components/PWAHead';
 
-const jetBrainsMono = JetBrainsMono({ subsets: ['latin'] });
+import '../styles/globals.css';
 
-const App = ({ Component, pageProps }: AppProps) => (
-  <div
-    style={{
-      height: '100%',
-      width: '100%',
-      ...jetBrainsMono.style,
-    }}
-  >
-    <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-      theme={{
-        fontFamily: jetBrainsMono.style.fontFamily,
-        fontFamilyMonospace: jetBrainsMono.style.fontFamily,
-        cursorType: 'pointer',
-        colorScheme: 'dark',
-        primaryColor: 'teal',
+const jetBrainsMono = JetBrainsMono({
+  subsets: ['latin'],
+  display: 'block',
+});
+
+const App = ({ Component, pageProps }: AppProps) => {
+  const colorScheme = useColorScheme('dark');
+
+  return (
+    <div
+      style={{
+        height: '100%',
+        width: '100%',
+        ...jetBrainsMono.style,
       }}
     >
-      <DefaultSeo
-        title="Secure Password Generator"
-        description="A simple and offline-first secure password generator."
-        canonical="https://spg.ptr.red/"
-        openGraph={{
-          images: [
-            {
-              url: 'https://spg.ptr.red/api/og',
-              width: 1200,
-              height: 630,
-            },
-          ],
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          fontFamily: jetBrainsMono.style.fontFamily,
+          fontFamilyMonospace: jetBrainsMono.style.fontFamily,
+          cursorType: 'pointer',
+          colorScheme,
+          primaryColor: 'teal',
         }}
-        additionalLinkTags={[
-          {
-            rel: 'icon',
-            href: '/assets/favicon.svg',
-          },
-        ]}
-      />
-      <PWAHead />
-      <Component {...pageProps} />
-    </MantineProvider>
-  </div>
-);
+      >
+        <DefaultSeo
+          title="Secure Password Generator"
+          description="A simple and offline-first secure password generator."
+          canonical="https://spg.ptr.red/"
+          openGraph={{
+            images: [
+              {
+                url: 'https://spg.ptr.red/api/og',
+                width: 1200,
+                height: 630,
+              },
+            ],
+          }}
+          additionalLinkTags={[
+            {
+              rel: 'icon',
+              href: '/assets/favicon.svg',
+            },
+          ]}
+        />
+        <PWAHead />
+        <Component {...pageProps} />
+      </MantineProvider>
+    </div>
+  );
+};
 
 export default App;
