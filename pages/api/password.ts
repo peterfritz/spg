@@ -10,13 +10,9 @@ const handler = async (req: NextRequest) => {
 
   let pwdLength = !length || !/^\d+$/.test(length) ? 16 : Number(length);
 
-  pwdLength = pwdLength > 128 ? 128 : pwdLength;
+  pwdLength = pwdLength > 256 ? 256 : pwdLength;
 
-  let charSets = chars ? chars.split(',') : ['uppercase', 'lowercase', 'numbers', 'symbols'];
-
-  charSets = charSets.filter((set) => (
-    Object.keys(characterSets).includes(set)
-  ));
+  const charSets = chars ? chars.split(',') : ['uppercase', 'lowercase', 'numbers', 'symbols'];
 
   const password = generatePassword(
     pwdLength,
