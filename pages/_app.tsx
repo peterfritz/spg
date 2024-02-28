@@ -2,8 +2,8 @@ import type { AppProps } from 'next/app';
 
 import { MantineProvider } from '@mantine/core';
 import { useColorScheme } from '@mantine/hooks';
-import { JetBrains_Mono as JetBrainsMono } from '@next/font/google';
 import { DefaultSeo } from 'next-seo';
+import { JetBrains_Mono as JetBrainsMono } from 'next/font/google';
 import PWAHead from '../components/PWAHead';
 
 import '../styles/globals.css';

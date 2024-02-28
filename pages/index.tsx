@@ -12,7 +12,9 @@ import {
   Stack,
   TextInput,
 } from '@mantine/core';
-import { useCounter, useId, useLocalStorage } from '@mantine/hooks';
+import {
+  useCounter, useId, useLocalStorage,
+} from '@mantine/hooks';
 import { useEffect, useMemo, useState } from 'react';
 import {
   FaCheck, FaCopy, FaLink,
@@ -49,17 +51,39 @@ const Home = () => {
     getInitialValueInEffect: false,
   });
 
-  const [savePreferences, setSavePreferences] = useState(preferences.savePreferences);
-  const [length, setLength] = useState(preferences.length);
-  const [endLength, setEndLength] = useState(preferences.length);
   const [password, setPassword] = useState('');
-  const [characters, setCharacters] = useState(preferences.characters);
+  const [sliderValue, setSliderValue] = useState(0);
 
   const lengthInput = useId();
   const [counter, handlers] = useCounter(0);
 
+  const {
+    length,
+    endLength,
+    characters,
+    savePreferences,
+  } = useMemo(() => ({
+    ...preferences,
+    endLength: preferences.length,
+  }), [preferences]);
+
+  useEffect(() => {
+    setSliderValue(length);
+  }, [length]);
+
+  const setProperty = <T extends keyof Preferences>(property: T, value: Preferences[T]) => {
+    setPreferences((prevState) => ({
+      ...prevState,
+      [property]: value,
+    }));
+
+    if (property === 'length') {
+      setSliderValue(value as number);
+    }
+  };
+
   const handleSavePreferencesChange = (value: boolean) => {
-    setSavePreferences(value);
+    setProperty('savePreferences', value);
 
     setPreferences((prevState) => ({
       ...(value ? prevState : DEFAULT_PREFERENCES),
@@ -76,14 +100,15 @@ const Home = () => {
 
     url.pathname = '/api/password';
 
-    url.searchParams.set('length', String(endLength));
+    url.searchParams.set('length', String(length));
     url.searchParams.set('chars', characters.join(','));
 
     return url.href;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endLength, characters]);
 
   useEffect(() => {
-    if (!endLength) {
+    if (!endLength || endLength >= 256) {
       return;
     }
 
@@ -92,6 +117,14 @@ const Home = () => {
     setPassword(newPassword);
 
     if (savePreferences) {
+      if ([
+        preferences.length === endLength,
+        preferences.characters.sort().join('') === characters.sort().join(''),
+        preferences.savePreferences === savePreferences,
+      ].every(Boolean)) {
+        return;
+      }
+
       setPreferences((prevState) => ({
         ...prevState,
         length: endLength,
@@ -129,7 +162,7 @@ const Home = () => {
         <Checkbox.Group
           label="Character set"
           value={characters}
-          onChange={(val: Preferences['characters']) => setCharacters(val)}
+          onChange={(val: Preferences['characters']) => setProperty('characters', val)}
           withAsterisk
         >
           <Checkbox value="uppercase" label="Uppercase" />
@@ -148,8 +181,8 @@ const Home = () => {
             <NumberInput
               value={length}
               onChange={(val: number) => {
-                setLength(val);
-                setEndLength(val);
+                setProperty('length', val);
+                setSliderValue(val);
               }}
               id={lengthInput}
               autoComplete="off"
@@ -166,9 +199,13 @@ const Home = () => {
               }}
             />
             <Slider
-              value={length}
-              onChange={setLength}
-              onChangeEnd={setEndLength}
+              value={sliderValue}
+              onChange={(val) => {
+                setSliderValue(val);
+              }}
+              onChangeEnd={(val) => {
+                setProperty('length', val);
+              }}
               maw="100%"
               min={8}
               max={128}

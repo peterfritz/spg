@@ -2,6 +2,8 @@ import { NextRequest } from 'next/server';
 import cors from '../../lib/cors';
 import generatePassword, { characterSets, getCharacterSet } from '../../utils/password';
 
+const MAX_LENGTH = 1024;
+
 const handler = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
 
@@ -10,7 +12,7 @@ const handler = async (req: NextRequest) => {
 
   let pwdLength = !length || !/^\d+$/.test(length) ? 16 : Number(length);
 
-  pwdLength = pwdLength > 256 ? 256 : pwdLength;
+  pwdLength = pwdLength > MAX_LENGTH ? MAX_LENGTH : pwdLength;
 
   const charSets = chars ? chars.split(',') : ['uppercase', 'lowercase', 'numbers', 'symbols'];
 
