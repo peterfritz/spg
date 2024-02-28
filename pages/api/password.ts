@@ -1,4 +1,3 @@
-import { pickBy } from 'lodash';
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import cors from '../../lib/cors';
@@ -61,15 +60,13 @@ const schema = z.object({
 const handler = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
 
-  const result = schema.safeParse(
-    pickBy({
-      output: searchParams.get('output') ?? undefined,
-      chars: searchParams.get('chars') ?? undefined,
-      length: searchParams.get('length') ?? undefined,
-      minLength: searchParams.get('min_length') ?? undefined,
-      maxLength: searchParams.get('max_length') ?? undefined,
-    }),
-  );
+  const result = schema.safeParse({
+    output: searchParams.get('output') ?? undefined,
+    chars: searchParams.get('chars') ?? undefined,
+    length: searchParams.get('length') ?? undefined,
+    minLength: searchParams.get('min_length') ?? undefined,
+    maxLength: searchParams.get('max_length') ?? undefined,
+  });
 
   if (!result.success) {
     return cors(

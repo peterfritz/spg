@@ -13,11 +13,19 @@ import {
   TextInput,
 } from '@mantine/core';
 import {
-  useCounter, useId, useLocalStorage,
+  useCounter,
+  useId,
+  useLocalStorage,
 } from '@mantine/hooks';
-import { useEffect, useMemo, useState } from 'react';
 import {
-  FaCheck, FaCopy, FaLink,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
+  FaCheck,
+  FaCopy,
+  FaLink,
 } from 'react-icons/fa';
 import generatePassword, { characterSets, getCharacterSet } from '../utils/password';
 
