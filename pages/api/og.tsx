@@ -8,6 +8,8 @@ const font = fetch(new URL('../../public/assets/JetBrainsMono-Bold.ttf', import.
 const handler = async () => {
   const fontData = await font;
 
+  const password = generatePassword(25, getCharacterSet(['uppercase', 'lowercase', 'numbers', 'symbols']));
+
   return new ImageResponse(
     (
       <div
@@ -51,7 +53,7 @@ const handler = async () => {
           fontSize: 35,
         }}
         >
-          { generatePassword(25, getCharacterSet(['uppercase', 'lowercase', 'numbers', 'symbols']))}
+          { password }
         </div>
       </div>
     ),
