@@ -151,7 +151,7 @@ const Home = () => {
       p="md"
     >
       <Stack
-        maw="35rem"
+        maw="31rem"
         w="100%"
       >
         <TextInput
