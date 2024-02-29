@@ -51,7 +51,6 @@ const DEFAULT_PREFERENCES: Preferences = {
     'lowercase',
     'numbers',
     'symbols',
-    'hex',
   ],
   randomLength: false,
   minLength: 16,
