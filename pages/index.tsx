@@ -85,6 +85,7 @@ const Home = () => {
     minLength,
     maxLength,
   } = useMemo(() => ({
+    ...DEFAULT_PREFERENCES,
     ...preferences,
   }), [preferences]);
 
